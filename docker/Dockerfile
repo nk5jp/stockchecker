@@ -29,7 +29,7 @@ RUN curl -kL https://bootstrap.pypa.io/get-pip.py | python3.7
 RUN pip install requests
 
 # mysqlのインストール
-RUN yum install https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
+RUN yum install -y https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
 RUN yum install -y mysql-server
 
 # 認証方式の変更
