@@ -27,6 +27,7 @@ RUN rm -rf Python-3.7.3
 # pipおよびモジュールのインストール
 RUN curl -kL https://bootstrap.pypa.io/get-pip.py | python3.7
 RUN pip install requests
+RUN pip install firebase-admin
 
 # mysqlのインストール
 RUN yum install -y https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm

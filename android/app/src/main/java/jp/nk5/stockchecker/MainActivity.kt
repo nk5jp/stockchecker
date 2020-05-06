@@ -3,8 +3,7 @@ package jp.nk5.stockchecker
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.EditText
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
 import androidx.constraintlayout.widget.Constraints.TAG
@@ -30,8 +29,8 @@ class MainActivity : AppCompatActivity() {
 
                 // Log and toast
                 Log.d(TAG, token)
-                val messageView: TextView = findViewById(R.id.textview1)
-                messageView.text = token
+                val messageView: EditText = findViewById(R.id.editText)
+                messageView.setText(token)
 
             })
     }
