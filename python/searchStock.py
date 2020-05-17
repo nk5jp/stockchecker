@@ -6,7 +6,7 @@ from configparser import ConfigParser
 import MySQLdb
 
 baseURL = 'https://minkabu.jp/stock/'
-insertSQL = 'insert into stock(code, name) values (%d, %s)'
+insertSQL = 'insert into stock(code, name) values (%s, %s)'
 
 class MinkabuParser(HTMLParser):
     def __init__(self):
@@ -31,20 +31,20 @@ def main():
     password = config.get('mysql', 'password')
     host = config.get('mysql', 'host')
     database = config.get('mysql', 'database')
-    for code in range(1000, 9999):
+    for code in range(1000, 10000):
         URL = baseURL + str(code)
         request = requests.get(URL)
         parser = MinkabuParser()
         parser.feed(request.text)
         if parser.has_stock_name:
             conn = MySQLdb.connect(
-                user,
-                password,
-                host,
-                database
+                user=user,
+                passwd=password,
+                host=host,
+                db=database
             )
             cursor = conn.cursor()
-            cursor.execute(sql, (code, parser.name))
+            cursor.execute(insertSQL, (str(code), parser.name))
             conn.commit()
             conn.close()
             print(f'{code}: {parser.name}')

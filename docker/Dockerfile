@@ -28,6 +28,8 @@ RUN rm -rf Python-3.7.3
 RUN curl -kL https://bootstrap.pypa.io/get-pip.py | python3.7
 RUN pip install requests
 RUN pip install firebase-admin
+# RUN sudo yum -y install epel-release たぶん意味ない
+RUN yum install -y python36-devel mysql-devel
 RUN pip install mysqlclient
 
 # mysqlのインストール
