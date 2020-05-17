@@ -28,6 +28,7 @@ RUN rm -rf Python-3.7.3
 RUN curl -kL https://bootstrap.pypa.io/get-pip.py | python3.7
 RUN pip install requests
 RUN pip install firebase-admin
+RUN pip install mysqlclient
 
 # mysqlのインストール
 RUN yum install -y https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
@@ -39,9 +40,9 @@ RUN echo 'default-authentication-plugin = mysql_native_password' >> /etc/my.cnf
 # ディレクトリの作成と資材コピー
 WORKDIR /
 RUN mkdir /usr/bin/stockchecker/
-COPY python/ /usr/bin/stockchecker/
-COPY mysql/ /usr/bin/stockchecker/
-COPY security/ /usr/bin/stockchecker/
+COPY ../python/ /usr/bin/stockchecker/
+COPY ../mysql/ /usr/bin/stockchecker/
+COPY ../security/ /usr/bin/stockchecker/
 
 # 環境変数の設定
 ENV GOOGLE_APPLICATION_CREDENTIALS="/usr/bin/stockchecker/security/service-account-file.json"
