@@ -29,7 +29,7 @@ def insertStock(code, name):
         conn.close()
 
 
-def selectAllStock()
+def selectAllStock():
     conn = MySQLdb.connect(
         user=user,
         passwd=password,
