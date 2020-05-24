@@ -2,11 +2,9 @@ import requests
 import sys
 from html.parser import HTMLParser
 from decimal import Decimal
-from configparser import ConfigParser
-import MySQLdb
+import dao
 
 baseURL = 'https://minkabu.jp/stock/'
-insertSQL = 'insert into stock(code, name) values (%s, %s)'
 
 class MinkabuParser(HTMLParser):
     def __init__(self):
@@ -25,28 +23,13 @@ class MinkabuParser(HTMLParser):
             self.name = data
 
 def main():
-    config = ConfigParser()
-    config.read('config.ini')
-    user = config.get('mysql', 'user')
-    password = config.get('mysql', 'password')
-    host = config.get('mysql', 'host')
-    database = config.get('mysql', 'database')
     for code in range(1000, 10000):
         URL = baseURL + str(code)
         request = requests.get(URL)
         parser = MinkabuParser()
         parser.feed(request.text)
         if parser.has_stock_name:
-            conn = MySQLdb.connect(
-                user=user,
-                passwd=password,
-                host=host,
-                db=database
-            )
-            cursor = conn.cursor()
-            cursor.execute(insertSQL, (str(code), parser.name))
-            conn.commit()
-            conn.close()
+            dao.insertStock(str(code), parser.name)
             print(f'{code}: {parser.name}')
         else:
             print(f'{code}: Not Found')
