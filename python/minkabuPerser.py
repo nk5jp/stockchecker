@@ -52,7 +52,7 @@ class MinkabuParser(HTMLParser):
         if self.is_in_stockname_tag:
             self.name = data
         elif self.is_in_stockdate_fsm_tag:
-            self.date = data.replace('(', '')..replace(')', '').replace('/', '')
+            self.date = data.replace('(', '').replace(')', '').replace('/', '')
             self.date = str(datetime.datetime.now().year) + self.date
         elif self.is_in_stockprice_tag:
             self.price += data

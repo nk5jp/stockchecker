@@ -72,7 +72,7 @@ def selectAllWatchByCode():
     )
     cursor = conn.cursor()
     try:
-        cursor.execute('select * from watch_by_code')
+        cursor.execute('select code, is_upper_bound+0, price from watch_by_code')
         results = cursor.fetchall()
         rules = {}
         for result in results:
