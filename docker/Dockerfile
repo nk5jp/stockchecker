@@ -45,6 +45,10 @@ RUN mkdir /usr/bin/stockchecker/
 COPY ../python/ /usr/bin/stockchecker/
 COPY ../mysql/ /usr/bin/stockchecker/
 COPY ../security/ /usr/bin/stockchecker/
+COPY .exrc /root/
 
 # 環境変数の設定
 ENV GOOGLE_APPLICATION_CREDENTIALS="/usr/bin/stockchecker/security/service-account-file.json"
+
+# タイムゾーンの修正
+RUN timedatectl set-timezone Asia/Tokyo

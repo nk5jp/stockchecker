@@ -3,6 +3,7 @@ import sys
 from html.parser import HTMLParser
 from decimal import Decimal
 import dao
+import datetime
 
 baseURL = 'https://minkabu.jp/stock/'
 
@@ -51,7 +52,8 @@ class MinkabuParser(HTMLParser):
         if self.is_in_stockname_tag:
             self.name = data
         elif self.is_in_stockdate_fsm_tag:
-            self.date = data
+            self.date = data.replace('(', '')..replace(')', '').replace('/', '')
+            self.date = str(datetime.datetime.now().year) + self.date
         elif self.is_in_stockprice_tag:
             self.price += data
 
@@ -61,9 +63,8 @@ def getStockInfo(code):
     request = requests.get(URL)
     parser = MinkabuParser()
     parser.feed(request.text)
-    if parser.has_stock_name:
-        print(f'code: {parser.name} : {parser.date} : {parser.price}')
+    today = datetime.datetime.now().strftime('%Y%m%d')
+    if parser.has_stock_name and not '-' in parser.price and today == parser.date:
+        return (code, parser.name, parser.date, parser.price)
     else:
-        print(f'code: Not Found')
-
-
+        return (0, '', '', 0.0)
