@@ -45,7 +45,7 @@ class MinkabuParser(HTMLParser):
             self.is_in_stockdate_fsm_tag = False
         elif self.is_in_stockprice_tag == True and tag == 'div':
             self.is_in_stockprice_tag = False
-            self.price = self.price.replace('円', '').replace(' ', '').replace('\n', '')
+            self.price = self.price.replace('円', '').replace(',', '').replace(' ', '').replace('\n', '')
 
 
     def handle_data(self, data):
