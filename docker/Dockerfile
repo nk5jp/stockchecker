@@ -36,6 +36,9 @@ RUN pip install mysqlclient
 RUN yum install -y https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
 RUN yum install -y mysql-server
 
+# cronのインストール
+RUN yum install -y cronie
+
 # 認証方式の変更
 RUN echo 'default-authentication-plugin = mysql_native_password' >> /etc/my.cnf
 

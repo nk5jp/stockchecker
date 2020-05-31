@@ -20,10 +20,14 @@
 - 環境変数に上記のパスを指定しておく．
   - `printenv`コマンドで，問題ないことを確認しておく． 
 
-## 初期起動時にmysql向けに実行すること
+## 初期起動時にmysql向けに実施すること
 
 - `sudo systemctl start mysqld.service`
 - `sudo systemctl enable mysqld.service`
 - `mysql_secure_installation`
 - `mysql -u アカウント名 -pパスワード < /usr/bin/stockchecker/mysql/initialization.sql`
 
+## 初期起動時にcrond向けに実施すること
+
+- `systemctl start crond`
+- `systemctl enable crond`
