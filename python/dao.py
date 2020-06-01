@@ -1,8 +1,9 @@
 from configparser import ConfigParser
 import MySQLdb
+import os
 
 config = ConfigParser()
-config.read('config.ini')
+config.read(os.getenv('STOCK_PYTHON_PATH') + 'config.ini')
 user = config.get('mysql', 'user')
 password = config.get('mysql', 'password')
 host = config.get('mysql', 'host')

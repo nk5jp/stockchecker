@@ -52,8 +52,7 @@ class MinkabuParser(HTMLParser):
         if self.is_in_stockname_tag:
             self.name = data
         elif self.is_in_stockdate_fsm_tag:
-            self.date = data.replace('(', '').replace(')', '').replace('/', '')
-            self.date = str(datetime.datetime.now().year) + self.date
+            self.date = data.replace('(', '').replace(')', '')
         elif self.is_in_stockprice_tag:
             self.price += data
 
@@ -63,8 +62,7 @@ def getStockInfo(code):
     request = requests.get(URL)
     parser = MinkabuParser()
     parser.feed(request.text)
-    today = datetime.datetime.now().strftime('%Y%m%d')
-    if parser.has_stock_name and not '-' in parser.price and today == parser.date:
-        return (code, parser.name, parser.date, parser.price)
+    if parser.has_stock_name and not '-' in parser.price and '(15:00)' == parser.date:
+        return (code, parser.name, datetime.datetime.now().strftime('%Y%m%d'), parser.price)
     else:
         return (0, '', '', 0.0)
