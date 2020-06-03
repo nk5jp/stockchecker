@@ -3,7 +3,7 @@ import MySQLdb
 import os
 
 config = ConfigParser()
-config.read(os.getenv('STOCK_PYTHON_PATH') + 'config.ini')
+config.read(os.path.join(os.path.dirname(__file__), 'config.ini'))
 user = config.get('mysql', 'user')
 password = config.get('mysql', 'password')
 host = config.get('mysql', 'host')

@@ -52,6 +52,7 @@ COPY .exrc /root/
 
 # 環境変数の設定
 ENV GOOGLE_APPLICATION_CREDENTIALS="/usr/bin/stockchecker/security/service-account-file.json"
+ENV STOCK_PYTHON_PATH="/usr/bin/stockchecker/python/"
 
 # タイムゾーンの修正
 RUN timedatectl set-timezone Asia/Tokyo
