@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">stockchecker</string>
+    <string name="str_token">token</string>
+</resources>
