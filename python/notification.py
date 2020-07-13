@@ -1,25 +1,24 @@
 import firebase_admin
 from firebase_admin import messaging
 
-default_app = firebase_admin.initialize_app()
+def sendMessage(data)
 
-# This registration token comes from the client FCM SDKs.
-registration_token = 'token'
+    default_app = firebase_admin.initialize_app()
 
-myNotification = messaging.Notification(title='Test', body='Hello, FCM from My Phthon Server!')
+    registration_token = 'token'
 
-# See documentation on defining a message payload.
-message = messaging.Message(
-    data={
-        'score': '850',
-        'time': '2:45',
-    },
-    token=registration_token,
-    notification=myNotification
-)
+    body = 'I have a message.'
+    myNotification = messaging.Notification('stockChecker', body)
 
-# Send a message to the device corresponding to the provided
-# registration token.
-response = messaging.send(message)
-# Response is a message ID string.
-print('Successfully sent message:', response)
+    # See documentation on defining a message payload.
+    message = messaging.Message(
+        data,
+        registration_token,
+        myNotification
+    )
+
+    # Send a message to the device corresponding to the provided
+    # registration token.
+    response = messaging.send(message)
+    # Response is a message ID string.
+    print('Successfully sent message:', response)
