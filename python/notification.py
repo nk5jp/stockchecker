@@ -1,7 +1,7 @@
 import firebase_admin
 from firebase_admin import messaging
 
-def sendMessage(data)
+def sendMessage(inputData):
 
     default_app = firebase_admin.initialize_app()
 
@@ -12,9 +12,9 @@ def sendMessage(data)
 
     # See documentation on defining a message payload.
     message = messaging.Message(
-        data,
-        registration_token,
-        myNotification
+        data=inputData,
+        token=registration_token,
+        notification=myNotification
     )
 
     # Send a message to the device corresponding to the provided
