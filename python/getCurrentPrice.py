@@ -18,10 +18,10 @@ def main():
                 if (code in watchByCode):
                     if (float(stockInfo[3]) < watchByCode[code][0]):
                         print (f'{code}: {stockInfo[3]} is lower than {watchByCode[code][0]}')
-                        notification.sendMessage({'date': stockInfo[2], 'message': "{0}の価格が{1}でした．".format(code, stockInfo[3])})
+                        notification.sendMessage({'date': str(stockInfo[2]), 'message': "{0}の価格が{1}でした．".format(code, stockInfo[3])})
                     if (float(stockInfo[3]) > watchByCode[code][1]):
                         print (f'{code}: {stockInfo[3]} is upper than {watchByCode[code][1]}')
-                        notification.sendMessage({'date': stockInfo[2], 'message': "{0}の価格が{1}でした．".format(code, stockInfo[3])})
+                        notification.sendMessage({'date': str(stockInfo[2]), 'message': "{0}の価格が{1}でした．".format(code, stockInfo[3])})
         except:
             print(f'{code}: some error has been occered and skipped.')
             continue
