@@ -31,6 +31,8 @@ RUN pip install firebase-admin
 # RUN sudo yum -y install epel-release たぶん意味ない
 RUN yum install -y python36-devel mysql-devel
 RUN pip install mysqlclient
+#numpyのインストール
+RUN pip install numpy
 
 # mysqlのインストール
 RUN yum install -y https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
