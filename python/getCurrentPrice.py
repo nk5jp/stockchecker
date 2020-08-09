@@ -26,11 +26,11 @@ def main():
                 latest40 = dao.selectStockByCode(code, 40)
                 if latest40.shape[0] != 40:
                     continue
-                if numpy.cov(latest40, rovar=0, bias=1)[0, 1] > 0:
+                if numpy.cov(latest40, rowvar=0, bias=1)[0, 1] > -500:
                     continue
                 latest10 = latest40[0:10]
-                if numpy.cov(latest10, rowvar=0, bias=1)[0, 1] > 0:
-                    print (f'{code} is recommended.')
+                if numpy.cov(latest10, rowvar=0, bias=1)[0, 1] > 70:
+                    print (f'{code} is recommended. {numpy.cov(latest40, rowvar=0, bias=1)[0, 1]} and {numpy.cov(latest10, rowvar=0, bias=1)[0, 1]}')
                     notification.sendMessage({'date': str(stockInfo[2]), 'message': "{0}の購入をオススメします．".format(code)})
         except Exception as e:
             print(f'{code}: some error has been occered and skipped.')
