@@ -22,8 +22,9 @@ def main():
                     if (float(stockInfo[3]) > watchByCode[code][1]):
                         print (f'{code}: {stockInfo[3]} is upper than {watchByCode[code][1]}')
                         notification.sendMessage({'date': str(stockInfo[2]), 'message': "{0}の価格が{1}でした．".format(code, stockInfo[3])})
-        except:
+        except Exception as e:
             print(f'{code}: some error has been occered and skipped.')
+            print(e)
             continue
     dt_now =  datetime.datetime.now()
     now = dt_now.strftime('%Y年%m月%d日 %H:%M:%S')
