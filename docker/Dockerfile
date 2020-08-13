@@ -47,10 +47,10 @@ RUN echo 'default-authentication-plugin = mysql_native_password' >> /etc/my.cnf
 # ディレクトリの作成と資材コピー
 WORKDIR /
 RUN mkdir /usr/bin/stockchecker/
-COPY ../python/ /usr/bin/stockchecker/
-COPY ../mysql/ /usr/bin/stockchecker/
-COPY ../security/ /usr/bin/stockchecker/
-COPY .exrc /root/
+COPY ./python/ /usr/bin/stockchecker/
+COPY ./mysql/ /usr/bin/stockchecker/
+COPY ./security/ /usr/bin/stockchecker/
+COPY ./docker/.exrc /root/
 
 # 環境変数の設定
 ENV GOOGLE_APPLICATION_CREDENTIALS="/usr/bin/stockchecker/security/service-account-file.json"
