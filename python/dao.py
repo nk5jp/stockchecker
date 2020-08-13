@@ -52,11 +52,11 @@ def selectStockByCode(code, max):
     cursor = conn.cursor()
     try:
         cursor.execute('select * from daily where code = %s order by get_date desc', (code,))
-        result = numpy.empty((0,0))
+        result = numpy.empty((2,0))
         min_max = max if cursor.rowcount > max else cursor.rowcount
         for i in range(min_max):
             daily = cursor.fetchone()
-            result_append = numpy.array([i],[float(daily[2])])
+            result_append = numpy.array([[i],[float(daily[2])]])
             result = numpy.append(result, result_append, axis=1)
         return result
     finally:
