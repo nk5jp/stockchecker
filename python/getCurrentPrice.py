@@ -10,10 +10,10 @@ def main():
     print(f'{now}: getCurrentPrice start')
     stocks = dao.selectAllStock()
     watchByCode = dao.selectAllWatchByCode()
+    messageString = ''
+    messageStringFormat = '{0}({1}), '
     for stock in stocks:
         try:
-            messageString = ''
-            messageStringFormat = '{0}({1}), '
             code = stock[0]
             stockInfo = minkabuParser.getStockInfo(code)
             if code == stockInfo[0]:
@@ -26,7 +26,7 @@ def main():
                         print (f'{code}: {stockInfo[3]} is upper than {watchByCode[code][1]}')
                         messageString = messageString + messageStringFormat.format(code, stockInfo[3])
                 latest40 = dao.selectStockByCode(code, 40)
-                if latest40.shape[0] != 40:
+                if latest40.shape[1] != 40:
                     continue
                 if numpy.corrcoef(latest40)[0, 1] > -0.7:
                     continue
