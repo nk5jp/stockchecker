@@ -13,7 +13,7 @@ def main():
                 continue
             if numpy.corrcoef(latest40)[0, 1] > -0.7:
                 continue
-            latest10 = latest40[0:10]
+            latest10 = latest40[:, 0:10]
             if numpy.corrcoef(latest10)[0, 1] > 0.7:
                 print (f'{code} is recommended. {numpy.corrcoef(latest40)[0, 1]} and {numpy.corrcoef(latest10)[0, 1]}')
         except Exception as e:
