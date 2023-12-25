@@ -17,16 +17,18 @@ def returnConnect():
         user=user,
         passwd=password,
         host=host,
-        db=database
+        db=database,
+        use_unicode=True,
+        charset="utf8"
     )
 
 
-def insertStock(code, name):
-    insertSQL = 'insert into stock(code, name) values (%s, %s)'
+def insertStock(code, name, dividend):
+    insertSQL = 'insert into stock(code, name, dividend) values (%s, %s, %s)'
     conn = returnConnect()
     cursor = conn.cursor()
     try:
-        cursor.execute(insertSQL, (code, name))
+        cursor.execute(insertSQL, (code, name, dividend))
         conn.commit()
     except Exception as e:
         conn.rollback()
@@ -47,6 +49,20 @@ def selectAllStock():
         conn.close()
 
 
+def updateStock(code, name, dividend):
+    updateSQL = 'update stock set name = %s, dividend = %s where code = %s'
+    conn = returnConnect()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(updateSQL, (name, dividend, code))
+        conn.commit()
+    except Exception as e:
+        conn.rollback()
+        raise e
+    finally:
+        cursor.close()
+        conn.close()
+
 def selectStockByCode(code, max):
     conn = returnConnect()
     cursor = conn.cursor()
@@ -58,6 +74,18 @@ def selectStockByCode(code, max):
             daily = cursor.fetchone()
             result_append = numpy.array([[i],[float(daily[2])]])
             result = numpy.append(result, result_append, axis=1)
+        return result
+    finally:
+        cursor.close()
+        conn.close()
+
+
+def checkTheStockRegistered(code):
+    conn = returnConnect()
+    cursor = conn.cursor()
+    try:
+        cursor.execute('select * from stock where code = %s', (code,))
+        result = True if cursor.rowcount > 0 else False
         return result
     finally:
         cursor.close()

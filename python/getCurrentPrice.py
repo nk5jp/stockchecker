@@ -3,6 +3,9 @@ import minkabuParser
 import datetime
 import notification
 import numpy
+import locale
+
+locale.setlocale(locale.LC_CTYPE, "Japanese_Japan.932")
 
 def main():
     dt_now =  datetime.datetime.now()
