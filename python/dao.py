@@ -1,6 +1,7 @@
 from configparser import ConfigParser
 import MySQLdb
 import os
+import numpy
 
 config = ConfigParser()
 config.read(os.path.join(os.path.dirname(__file__), 'config.ini'))
@@ -10,17 +11,24 @@ host = config.get('mysql', 'host')
 database = config.get('mysql', 'database')
 
 
-def insertStock(code, name):
-    insertSQL = 'insert into stock(code, name) values (%s, %s)'
-    conn = MySQLdb.connect(
+
+def returnConnect():
+    return MySQLdb.connect(
         user=user,
         passwd=password,
         host=host,
-        db=database
+        db=database,
+        use_unicode=True,
+        charset="utf8"
     )
+
+
+def insertStock(code, name, dividend):
+    insertSQL = 'insert into stock(code, name, dividend) values (%s, %s, %s)'
+    conn = returnConnect()
     cursor = conn.cursor()
     try:
-        cursor.execute(insertSQL, (code, name))
+        cursor.execute(insertSQL, (code, name, dividend))
         conn.commit()
     except Exception as e:
         conn.rollback()
@@ -31,12 +39,7 @@ def insertStock(code, name):
 
 
 def selectAllStock():
-    conn = MySQLdb.connect(
-        user=user,
-        passwd=password,
-        host=host,
-        db=database
-    )
+    conn = returnConnect()
     cursor = conn.cursor()
     try:
         cursor.execute('select * from stock')
@@ -45,14 +48,53 @@ def selectAllStock():
         cursor.close()
         conn.close()
 
+
+def updateStock(code, name, dividend):
+    updateSQL = 'update stock set name = %s, dividend = %s where code = %s'
+    conn = returnConnect()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(updateSQL, (name, dividend, code))
+        conn.commit()
+    except Exception as e:
+        conn.rollback()
+        raise e
+    finally:
+        cursor.close()
+        conn.close()
+
+def selectStockByCode(code, max):
+    conn = returnConnect()
+    cursor = conn.cursor()
+    try:
+        cursor.execute('select * from daily where code = %s order by get_date desc', (code,))
+        result = numpy.empty((2,0))
+        min_max = max if cursor.rowcount > max else cursor.rowcount
+        for i in range(min_max):
+            daily = cursor.fetchone()
+            result_append = numpy.array([[i],[float(daily[2])]])
+            result = numpy.append(result, result_append, axis=1)
+        return result
+    finally:
+        cursor.close()
+        conn.close()
+
+
+def checkTheStockRegistered(code):
+    conn = returnConnect()
+    cursor = conn.cursor()
+    try:
+        cursor.execute('select * from stock where code = %s', (code,))
+        result = True if cursor.rowcount > 0 else False
+        return result
+    finally:
+        cursor.close()
+        conn.close()
+
+
 def insertDaily(code, date, price):
     insertSQL = 'insert into daily(code, get_date, price) values (%s, %s, %s)'
-    conn = MySQLdb.connect(
-        user=user,
-        passwd=password,
-        host=host,
-        db=database
-    )
+    conn = returnConnect()
     cursor = conn.cursor()
     try:
         cursor.execute(insertSQL, (code, date, price))
@@ -65,12 +107,7 @@ def insertDaily(code, date, price):
         conn.close()
 
 def selectAllWatchByCode():
-    conn = MySQLdb.connect(
-        user=user,
-        passwd=password,
-        host=host,
-        db=database
-    )
+    conn = returnConnect()
     cursor = conn.cursor()
     try:
         cursor.execute('select code, is_upper_bound+0, price from watch_by_code')

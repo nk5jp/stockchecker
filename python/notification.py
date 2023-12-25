@@ -1,11 +1,12 @@
 import firebase_admin
 from firebase_admin import messaging
 
+
+default_app = firebase_admin.initialize_app()
+registration_token = 'token'
+
+
 def sendMessage(inputData):
-
-    default_app = firebase_admin.initialize_app()
-
-    registration_token = 'token'
 
     body = 'I have a message.'
     myNotification = messaging.Notification('stockChecker', body)
