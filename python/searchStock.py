@@ -14,13 +14,13 @@ class MinkabuParser(HTMLParser):
         self.is_in_stockdividend_tag = False
         self.dividend = ''
     def handle_starttag(self, tag, attrs):
-        if tag == 'p' and len(attrs) > 0 and attrs[0][0] == 'class' and attrs[0][1] == 'md_stockBoard_stockName':
+        if tag == 'span' and len(attrs) > 0 and attrs[0][0] == 'class' and attrs[0][1] == 'md_stockBoard_stockName':
             self.is_in_stockname_tag = True
             self.has_stock_name = True
         elif tag == 'span' and len(attrs) > 0 and attrs[0][0] == 'class' and attrs[0][1] == 'dividend-state__amount__integer':
             self.is_in_stockdividend_tag = True
     def handle_endtag(self, tag):
-        if self.is_in_stockname_tag == True and tag == 'p':
+        if self.is_in_stockname_tag == True and tag == 'span':
             self.is_in_stockname_tag = False
         elif self.is_in_stockdividend_tag == True and tag == 'span':
             self.is_in_stockdividend_tag = False
@@ -41,13 +41,29 @@ def main():
             parser.dividend = '0'
         if parser.has_stock_name and not(dao.checkTheStockRegistered(code)):
             dao.insertStock(str(code), parser.name, int(parser.dividend))
-            # print(f'{code}: {parser.name} add')
+            print(f'{code}: {parser.name} add')
         elif parser.has_stock_name and dao.checkTheStockRegistered(code):
             dao.updateStock(str(code), parser.name, int(parser.dividend))
-            # print(f'{code}: {parser.name} update')
+            print(f'{code}: {parser.name} update')
         # else:
         #     print(f'{code}: Not Found')
-
+    for i in range(65, 91):
+        for code_min in range(130, 999):
+            code = str(code_min) + chr(i)
+            URL = baseURL + code + '/dividend'
+            request = requests.get(URL)
+            parser = MinkabuParser()
+            parser.feed(request.text)
+            if parser.dividend == '':
+                parser.dividend = '0'
+            if parser.has_stock_name and not(dao.checkTheStockRegistered(code)):
+                dao.insertStock(code, parser.name, int(parser.dividend))
+                print(f'{code}: {parser.name} add')
+            elif parser.has_stock_name and dao.checkTheStockRegistered(code):
+                dao.updateStock(code, parser.name, int(parser.dividend))
+                print(f'{code}: {parser.name} update')
+            # else:
+            #     print(f'{code}: Not Found')
 if __name__ == '__main__':
     main()
 
