@@ -25,7 +25,7 @@ class MinkabuParser(HTMLParser):
 
 
     def handle_starttag(self, tag, attrs):
-        if tag == 'p' and self.checkAttrs(attrs, 'class', 'md_stockBoard_stockName'):
+        if tag == 'span' and self.checkAttrs(attrs, 'class', 'md_stockBoard_stockName'):
             self.is_in_stockname_tag = True
             self.has_stock_name = True
         elif tag == 'span' and self.checkAttrs(attrs, 'class', 'fsm') and self.is_in_stockdate_tag:
@@ -37,7 +37,7 @@ class MinkabuParser(HTMLParser):
 
 
     def handle_endtag(self, tag):
-        if self.is_in_stockname_tag == True and tag == 'p':
+        if self.is_in_stockname_tag == True and tag == 'span':
             self.is_in_stockname_tag = False
         elif self.is_in_stockdate_tag == True and tag == 'h2':
             self.is_in_stockdate_tag = False
@@ -47,7 +47,6 @@ class MinkabuParser(HTMLParser):
             self.is_in_stockprice_tag = False
             self.price = self.price.replace('円', '').replace(',', '').replace(' ', '').replace('\n', '')
 
-
     def handle_data(self, data):
         if self.is_in_stockname_tag:
             self.name = data
@@ -55,7 +54,6 @@ class MinkabuParser(HTMLParser):
             self.date = data.replace('(', '').replace(')', '')
         elif self.is_in_stockprice_tag:
             self.price += data
-
 
 def getStockInfo(code):
     URL = baseURL + str(code)
