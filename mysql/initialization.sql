@@ -3,14 +3,14 @@ USE stockapp;
 
 CREATE TABLE IF NOT EXISTS stock
 (
-    code SMALLINT UNSIGNED NOT NULL PRIMARY KEY,
+    code varchar(4) NOT NULL PRIMARY KEY,
     name VARCHAR(100),
     dividend SMALLINT NOT NULL NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS daily
 (
-    code SMALLINT UNSIGNED NOT NULL,
+    code varchar(4) NOT NULL,
     get_date INT UNSIGNED NOT NULL,
     price DECIMAL(8,1) NOT NULL,
     PRIMARY KEY(code, get_date),
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS daily
 
 CREATE TABLE IF NOT EXISTS watch_by_code
 (
-    code SMALLINT UNSIGNED NOT NULL,
+    code varchar(4) NOT NULL,
     is_upper_bound BIT NOT NULL,
     price DECIMAL(8,1) NOT NULL,
     PRIMARY KEY(code, is_upper_bound),
