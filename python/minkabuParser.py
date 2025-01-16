@@ -60,7 +60,8 @@ def getStockInfo(code):
     request = requests.get(URL)
     parser = MinkabuParser()
     parser.feed(request.text)
-    if parser.has_stock_name and not '-' in parser.price and ':' in parser.date:
+#    if parser.has_stock_name and not '-' in parser.price and ':' in parser.date:
+    if parser.has_stock_name and not '-' in parser.price:
         return (code, parser.name, datetime.datetime.now().strftime('%Y%m%d'), parser.price)
     else:
         print(f'{code} is skipped: {parser.price}, {parser.date}')
